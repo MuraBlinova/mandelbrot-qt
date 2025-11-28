@@ -201,6 +201,9 @@ auto Window::captureMetrics() -> PerfomanceMetricsGuard
 
 void Window::wheelEvent(QWheelEvent* event)
 {
+	windowWidth_ = this->width();
+	windowHeight_ = this->height();
+
     const double zoomFactor = 1.1;
     const double oldZoom = zoom_;
     
@@ -246,6 +249,9 @@ void Window::mouseMoveEvent(QMouseEvent* event)
 {
     if (isDragging_)
     {
+		windowWidth_ = this->width();
+		windowHeight_ = this->height();
+
         const QPoint delta = event->pos() - lastMousePos_;
         lastMousePos_ = event->pos();
         
@@ -253,10 +259,8 @@ void Window::mouseMoveEvent(QMouseEvent* event)
         const double sizeX = 2.0 / zoom_;
         const double sizeY = sizeX / aspect;
         
-        const double speedMultiplier = 4.0;
-        
-        const double deltaX = -(delta.x() / static_cast<double>(windowWidth_)) * sizeX * speedMultiplier;
-        const double deltaY = (delta.y() / static_cast<double>(windowHeight_)) * sizeY * speedMultiplier;
+        const double deltaX = -(delta.x() / static_cast<double>(windowWidth_)) * sizeX;
+        const double deltaY = (delta.y() / static_cast<double>(windowHeight_)) * sizeY;
         
         centerX_ += deltaX;
         centerY_ += deltaY;
